@@ -1,30 +1,33 @@
 {
-  "name": "package.json",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "prettier": "3.8.1",
-    "vite": "^7.2.4",
-    "vitest": "^4.0.18"
-  }
+    "name": "package.json",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
+        "postinstall": "mkdir -p public/cesium && cp -R node_modules/cesium/Build/Cesium/Assets public/cesium/Assets && cp -R node_modules/cesium/Build/Cesium/Widgets public/cesium/Widgets && cp -R node_modules/cesium/Build/Cesium/ThirdParty public/cesium/ThirdParty && cp -R node_modules/cesium/Build/Cesium/Workers public/cesium/Workers"
+    },
+    "dependencies": {
+        "cesium": "^1.138.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "resium": "^1.19.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.1",
+        "@types/react": "^19.2.5",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^5.1.1",
+        "eslint": "^9.39.1",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.4.24",
+        "globals": "^16.5.0",
+        "prettier": "3.8.1",
+        "vite": "^7.2.4",
+        "vitest": "^4.0.18"
+    }
 }

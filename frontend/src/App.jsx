@@ -1,8 +1,11 @@
+import { Viewer } from 'resium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
+
 function App() {
     return (
         <>
             <div>
-                <h1>CommandSat</h1>
+                <Viewer full></Viewer>
             </div>
         </>
     );
