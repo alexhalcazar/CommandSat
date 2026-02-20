@@ -1,0 +1,16 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "backend services for CommandSat",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app.js"
+    },
+    "type": "module",
+    "author": "Alex Alcazar",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^5.2.1"
+    }
+}
