@@ -1,0 +1,22 @@
+{
+    "name": "commandsat",
+    "version": "1.0.0",
+    "description": "a web application that lets users explore satellites orbiting Earth",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint ."
+    },
+    "type": "module",
+    "author": "Alex Alcazar",
+    "license": "ISC",
+    "devDependencies": {
+        "@eslint/js": "^9.39.2",
+        "eslint": "^9.39.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.5.0",
+        "globals": "^17.3.0",
+        "prettier": "^3.8.1"
+    }
+}
