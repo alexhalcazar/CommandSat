@@ -6,7 +6,7 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default defineConfig([
-    globalIgnores(['dist', 'public/cesium']),
+    globalIgnores(['frontend/dist', 'frontend/public/cesium']),
     {
         files: ['**/*.{js,jsx}'],
         extends: [
@@ -17,7 +17,7 @@ export default defineConfig([
         ],
         languageOptions: {
             ecmaVersion: 2020,
-            globals: globals.browser,
+            globals: { ...globals.browser, process: 'readonly' },
             parserOptions: {
                 ecmaVersion: 'latest',
                 ecmaFeatures: { jsx: true },
