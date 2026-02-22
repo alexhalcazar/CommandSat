@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
-import satelliteRouter from './api/routes/satellites.routes.js';
+import satelliteRouter from '#routes/satellites.routes';
 const app = express();
 const port = 3000;
 
