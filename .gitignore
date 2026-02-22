@@ -25,3 +25,6 @@ dist-ssr
 
 # Cesium static assets
 frontend/public/cesium
+
+# Environment Variables
+.env
