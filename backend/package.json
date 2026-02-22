@@ -8,9 +8,17 @@
         "start": "node app.js"
     },
     "type": "module",
+    "imports": {
+        "#controllers/*": "./api/controllers/*.js",
+        "#routes/*": "./api/routes/*.js",
+        "#services/*": "./api/services/*.js",
+        "#utils/*": "./api/utils/*.js"
+    },
     "author": "Alex Alcazar",
     "license": "ISC",
     "dependencies": {
+        "axios": "^1.13.5",
+        "dotenv": "^17.3.1",
         "express": "^5.2.1"
     }
 }
