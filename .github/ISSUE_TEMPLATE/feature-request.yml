@@ -27,3 +27,9 @@ body:
       placeholder: Explain the benefit or problem it solves
     validations:
       required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance Criteria/Other
+    validations:
+      required: true
