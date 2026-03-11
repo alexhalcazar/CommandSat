@@ -4,7 +4,7 @@ import satelliteRouter from '#routes/satellites.routes';
 const app = express();
 const port = 3000;
 
-app.use('/satellites', satelliteRouter);
+app.use('/api/satellites', satelliteRouter);
 
 app.listen(port, () => {
     console.log(`Server is now listening on port ${port}`);
