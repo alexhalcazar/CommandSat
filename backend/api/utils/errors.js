@@ -21,7 +21,7 @@ export class CommandSatError extends Error {
  * @param {number} status - HTTP status code from the server response
  */
 export class ServerResponseError extends CommandSatError {
-    constructor(message = 'Server encountered an error', status) {
+    constructor(message = 'Server encountered an error', status = 500) {
         super(message, status);
     }
 }
@@ -32,7 +32,6 @@ export class ServerResponseError extends CommandSatError {
  * @extends CommandSatError
  * @param {string} [message='No response from the server'] - Optional custom message
  * @param {number} [status=503] - Optional HTTP status code
- *
  */
 export class NoResponseError extends CommandSatError {
     constructor(message = 'No response from the server', status = 503) {
@@ -46,7 +45,6 @@ export class NoResponseError extends CommandSatError {
  * @extends CommandSatError
  * @param {string} message - Error message
  * @param {number} [status=500] - Optional HTTP status code
- *
  */
 export class RequestSetupError extends CommandSatError {
     constructor(message, status = 500) {
