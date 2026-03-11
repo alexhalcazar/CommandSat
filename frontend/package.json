@@ -13,7 +13,8 @@
         "cesium": "^1.138.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
-        "resium": "^1.19.3"
+        "resium": "^1.19.3",
+        "vite-plugin-svgr": "^4.5.0"
     },
     "devDependencies": {
         "@types/react": "^19.2.5",
