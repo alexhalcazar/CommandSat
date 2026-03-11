@@ -1,11 +1,10 @@
-import { Viewer } from 'resium';
-import 'cesium/Build/Cesium/Widgets/widgets.css';
+import { Dashboard } from '@pages/Dashboard/Dashboard';
 
 function App() {
     return (
         <>
             <div>
-                <Viewer full></Viewer>
+                <Dashboard />
             </div>
         </>
     );
