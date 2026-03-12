@@ -33,7 +33,6 @@ export const Dashboard = () => {
             );
             const data = await response.json();
             setSatellites(data.above);
-            console.log(lat, lng);
         } catch (err) {
             console.error(err);
         }
@@ -56,12 +55,7 @@ export const Dashboard = () => {
                         height: sat.satalt,
                         pixelSize: 10,
                     };
-                    return (
-                        <EntityPoint
-                            key={sat.satid}
-                            entityPoint={{ ...satellite }}
-                        />
-                    );
+                    return <EntityPoint key={sat.satid} {...satellite} />;
                 })}
             </Viewer>
         </>
