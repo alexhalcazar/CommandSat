@@ -11,15 +11,15 @@ jobs:
           node-version: 20
       - name: Install root dependencies
         run: npm ci
-      
+
       - name: Backend tests
         run: |
           cd backend
           npm ci
           npm test
-      
+
       - name: Frontend tests
-          run: |
+        run: |
           cd frontend
           npm ci
           npm test
