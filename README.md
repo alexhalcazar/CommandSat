@@ -4,7 +4,7 @@ CommandSat is a web application that lets users explore satellites orbiting Eart
 
 ## Prerequisites
 
-- Node.js (v20 or higher)
+- Node.js (20.19+ or 22.12+)
 - npm (comes with Node)
 - N2YO account and API key
 
