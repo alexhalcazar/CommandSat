@@ -1,0 +1,14 @@
+.card {
+    position: relative;
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 1.5em;
+    border: 1px solid black;
+    z-index: 10;
+}
+
+.card-error {
+    border: 1px solid red;
+    background-color: #ee9b9b;
+    color: red;
+}
