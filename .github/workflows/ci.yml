@@ -3,12 +3,14 @@ name: tests CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  install-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24.x
+
       - name: Install root dependencies
         run: npm ci
 
