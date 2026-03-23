@@ -41,8 +41,8 @@ export const getSatellitesAbove = async (req, res) => {
     const { lat, lng, alt, radius, category_id } = req.query;
     try {
         const data = await fetchSatellitesAbove(
-            lng,
             lat,
+            lng,
             alt,
             radius,
             category_id
