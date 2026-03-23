@@ -1,4 +1,4 @@
-import { EntityPoint } from '@components/EntityPoint';
+import { EntityPoint } from '@components/EntityPoint/EntityPoint';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { Cartesian3 } from 'cesium';

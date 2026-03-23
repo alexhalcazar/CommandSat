@@ -1,4 +1,4 @@
-import { Button } from '@components/Button';
+import { Button } from '@components/Button/Button';
 import { render, screen, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
