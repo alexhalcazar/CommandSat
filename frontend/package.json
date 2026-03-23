@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "test": "vitest",
         "build": "vite build",
         "preview": "vite preview",
         "postinstall": "mkdir -p public/cesium && cp -R node_modules/cesium/Build/Cesium/Assets public/cesium/Assets && cp -R node_modules/cesium/Build/Cesium/Widgets public/cesium/Widgets && cp -R node_modules/cesium/Build/Cesium/ThirdParty public/cesium/ThirdParty && cp -R node_modules/cesium/Build/Cesium/Workers public/cesium/Workers"
@@ -13,12 +14,18 @@
         "cesium": "^1.138.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
-        "resium": "^1.19.3"
+        "resium": "^1.19.3",
+        "vite-plugin-svgr": "^4.5.0"
     },
     "devDependencies": {
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/react": "^19.2.5",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^5.1.1",
+        "happy-dom": "^20.8.4",
         "vite": "^7.2.4",
         "vitest": "^4.0.18"
     }

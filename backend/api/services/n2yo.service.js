@@ -9,7 +9,7 @@ const BASE_URL = 'https://api.n2yo.com/rest/v1/satellite/';
 const API_KEY = process.env.N2YO_API_KEY;
 
 /**
- * Returns all objects within a give search radius above observer's location
+ * Returns all objects within a given search radius above observer's location
  * @param {number} lat - Observers latitude, in degrees
  * @param {number} lng - Observers longitude, in degrees
  * @param {number} alt - Observers altitude above sea level in meters
