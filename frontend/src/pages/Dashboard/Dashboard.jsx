@@ -1,10 +1,11 @@
 import { Viewer } from 'resium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import { Button } from '@components/Button';
+import { Button } from '@components/Button/Button';
 import SatelliteIcon from '@assets/icons/satellite.svg?react';
 import './Dashboard.css';
 import { useState } from 'react';
-import { EntityPoint } from '@components/EntityPoint';
+import { EntityPoint } from '@components/EntityPoint/EntityPoint';
+import { Card } from '@components/Card/Card';
 
 export const Dashboard = () => {
     const [satellites, setSatellites] = useState([]);
@@ -29,7 +30,7 @@ export const Dashboard = () => {
 
         try {
             const response = await fetch(
-                `/api/satellites/above?lat=${lat}&lng=${lng}&alt=${350}&radius=${10}`
+                `/api/satellites/above?lat=${lat}&lng=${lng}&alt=${350}&radius=${20}`
             );
             const data = await response.json();
             setSatellites(data.above);
@@ -48,7 +49,7 @@ export const Dashboard = () => {
                 </Button>
             </div>
             <Viewer full>
-                {satellites.map((sat) => {
+                {satellites?.map((sat) => {
                     const satellite = {
                         longitude: sat.satlng,
                         latitude: sat.satlat,
@@ -58,6 +59,14 @@ export const Dashboard = () => {
                     return <EntityPoint key={sat.satid} {...satellite} />;
                 })}
             </Viewer>
+            {!satellites && (
+                <div className='flex-container-center'>
+                    <Card className='card card-error'>
+                        No Satellites detected with given location and above
+                        degrees
+                    </Card>
+                </div>
+            )}
         </>
     );
 };
