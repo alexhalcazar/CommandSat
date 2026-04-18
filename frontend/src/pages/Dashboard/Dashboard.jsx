@@ -6,6 +6,9 @@ import './Dashboard.css';
 import { useState } from 'react';
 import { EntityPoint } from '@components/EntityPoint/EntityPoint';
 import { Card } from '@components/Card/Card';
+import { Ion } from 'cesium';
+
+Ion.defaultAccessToken = import.meta.env.VITE_ION_TOKEN;
 
 export const Dashboard = () => {
     const [satellites, setSatellites] = useState([]);
