@@ -3,7 +3,7 @@ import { redisClient } from '../../api/config/redisClient';
 import { describe, beforeEach, expect, vi, it } from 'vitest';
 
 // mock Redis client
-vi.mock('../redis', () => ({
+vi.mock('../../api/config/redisClient', () => ({
     redisClient: {
         lPush: vi.fn(),
     },
