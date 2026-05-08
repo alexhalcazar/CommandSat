@@ -1,8 +1,8 @@
 import express from 'express';
-import { getSatellitesAbove } from '#controllers/satellites.controller';
+import { pushSatelliteJob } from '#controllers/satellites.controller';
 
 const router = express.Router();
 
-router.get('/above', getSatellitesAbove);
+router.post('/jobs', pushSatelliteJob);
 
 export default router;

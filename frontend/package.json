@@ -11,6 +11,7 @@
         "postinstall": "mkdir -p public/cesium && cp -R node_modules/cesium/Build/Cesium/Assets public/cesium/Assets && cp -R node_modules/cesium/Build/Cesium/Widgets public/cesium/Widgets && cp -R node_modules/cesium/Build/Cesium/ThirdParty public/cesium/ThirdParty && cp -R node_modules/cesium/Build/Cesium/Workers public/cesium/Workers"
     },
     "dependencies": {
+        "axios": "^1.16.0",
         "cesium": "^1.138.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",

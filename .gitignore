@@ -28,3 +28,8 @@ frontend/public/cesium
 
 # Environment Variables
 .env
+
+# Python
+.venv/
+__pychache__/
+*.pyc
