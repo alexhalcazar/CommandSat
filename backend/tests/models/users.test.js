@@ -4,6 +4,7 @@ import {
     findByUserId,
     activeSwitch,
     onboardUser,
+    findUserByEmail,
 } from '../../api/models/users.js';
 
 const mockQuery = vi.hoisted(() => vi.fn());
@@ -22,7 +23,9 @@ beforeEach(() => {
 
 describe('createUser', () => {
     it('should insert user and return newly inserted user id', async () => {
-        const newUser = { rows: [{ user_id: 1 }] };
+        const newUser = {
+            rows: [{ user_id: 1, username: 'new_user', email: 'myEmail' }],
+        };
 
         mockQuery.mockResolvedValue(newUser);
 
@@ -61,5 +64,20 @@ describe('onboardUser', () => {
         await onboardUser(1);
 
         expect(mockQuery).toHaveBeenCalledWith(expect.any(String), [1]);
+    });
+});
+
+describe('findUserByEmail', () => {
+    it('should query by user email', async () => {
+        const user = {
+            user_id: 1,
+            username: 'new_user',
+            email: 'myEmail',
+        };
+        mockQuery.mockResolvedValue({ rows: [user] });
+
+        const result = await findUserByEmail('myEmail');
+
+        expect(result).toEqual(user);
     });
 });

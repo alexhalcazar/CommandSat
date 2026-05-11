@@ -5,7 +5,7 @@ export const createUser = async (username, email, passwordHash) => {
         return await pool.query(
             `INSERT INTO users (username, email, password)
             VALUES ($1, $2, $3)
-            RETURNING user_id`,
+            RETURNING user_id, username, email`,
             [username, email, passwordHash]
         );
     } catch (err) {
@@ -49,6 +49,20 @@ export const onboardUser = async (id) => {
             WHERE user_id = $1`,
             [id]
         );
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+export const findUserByEmail = async (email) => {
+    try {
+        const result = await pool.query(
+            `SELECT * FROM users
+            WHERE email = $1`,
+            [email]
+        );
+        return result.rows[0] || null;
     } catch (err) {
         console.error(err);
         throw err;
