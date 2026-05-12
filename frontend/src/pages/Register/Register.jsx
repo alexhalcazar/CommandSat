@@ -24,7 +24,7 @@ export const Register = () => {
 
         try {
             const response = await axios.post(`/api/auth/register`, formData);
-            const token = response.token;
+            const token = response.data.token;
 
             sessionStorage.setItem('token', token);
 

@@ -23,7 +23,7 @@ export const Login = () => {
 
         try {
             const response = await axios.post(`/api/auth/login`, formData);
-            const token = response.token;
+            const token = response.data.token;
 
             sessionStorage.setItem('token', token);
 
