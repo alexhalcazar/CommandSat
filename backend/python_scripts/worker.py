@@ -45,8 +45,7 @@ def process_jobs(r):
             print('We got a new job!')
             _, data = job
             payload = json.loads(data)
-
-            user_id = payload['userId']
+            user_id = payload['user_id']
             satellites = []
             for gcs in payload['gcs']:
                 lat = gcs['lat']
@@ -54,10 +53,10 @@ def process_jobs(r):
                 alt = gcs['alt']
                 gcs_satellites =  fetch_satellites_above(lat, lng, alt)
                 satellites.extend(gcs_satellites['above'])
-            
+
             print('publishing data')
             r.publish('user-updates', json.dumps({
-                'userId': str(user_id),
+                'user_id': str(user_id),
                 'type': 'satellite_data',
                 'data': satellites
             }))

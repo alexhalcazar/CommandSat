@@ -3,11 +3,12 @@ import 'cesium/Build/Cesium/Widgets/widgets.css';
 import { Button } from '@components/Button/Button';
 import SatelliteIcon from '@assets/icons/satellite.svg?react';
 import './Dashboard.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { EntityPoint } from '@components/EntityPoint/EntityPoint';
 import { Card } from '@components/Card/Card';
 import { Ion } from 'cesium';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 Ion.defaultAccessToken = import.meta.env.VITE_ION_TOKEN;
 
@@ -16,7 +17,32 @@ export const Dashboard = () => {
     const [gcsCard, setGcsCard] = useState(false);
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
+    const [geoAttempted, setGeoAttempted] = useState(false);
     const wsRef = useRef(null);
+    const token = sessionStorage.getItem('token');
+    const user = token ? jwtDecode(token) : null;
+    const userId = user?.user_id;
+
+    const postJob = useCallback(
+        async (latitude, longitude) => {
+            // hard coded for Demo purposes only
+            const alt = 350;
+
+            await axios.post(
+                '/api/satellites/jobs',
+                {
+                    user_id: user.user_id,
+                    gcs: [{ lat: latitude, lng: longitude, alt }],
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+        },
+        [user, token]
+    );
 
     useEffect(() => {
         const initializeGCSFromGeolocation = async () => {
@@ -32,9 +58,10 @@ export const Dashboard = () => {
 
                 return { lat, lng };
             } catch (err) {
-                if (err.code === 1) {
+                if (err.code === 1 && !geoAttempted) {
                     console.log('Permission denied');
                     setGcsCard(true);
+                    setGeoAttempted(true);
                 } else {
                     console.error(err);
                 }
@@ -42,26 +69,11 @@ export const Dashboard = () => {
         };
 
         const initialLog = async () => {
-            // hard coded for Demo purposes only
-            const user = () => {
-                // TODO: JWT set in prior auth/login page
-                // const token = localStorage.getItem('token');
-                // return = JSON.parse(atob(token.split('.')[1]));
-                return { userId: '1', hasLoggedIn: false };
-            };
-
-            const currentUser = user();
-
-            if (currentUser && !currentUser.hasLoggedIn) {
+            if (user && !user.hasLoggedIn) {
                 const coords = await initializeGCSFromGeolocation();
                 try {
                     if (coords) {
-                        // hard coded for Demo purposes only
-                        const alt = 350;
-                        await axios.post('/api/satellites/jobs', {
-                            userId: currentUser.userId,
-                            gcs: [{ lat: coords.lat, lng: coords.lng, alt }],
-                        });
+                        await postJob(coords.lat, coords.lng);
                     }
                 } catch (err) {
                     console.error(err);
@@ -73,9 +85,11 @@ export const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        if (wsRef.current) return;
-        // TODO: Grab userId from token
-        const socket = new WebSocket('ws://localhost:3000?userId=1');
+        if (!userId || wsRef.current) return;
+
+        const socket = new WebSocket(
+            `${import.meta.env.VITE_WS_URL}?user_id=${user.user_id}`
+        );
 
         wsRef.current = socket;
 
@@ -103,26 +117,13 @@ export const Dashboard = () => {
             socket.close();
             wsRef.current = null;
         };
-    }, []);
+    }, [userId]);
 
     const handleInitialGCS = (e) => {
         e.preventDefault();
-        // TODO: verify lat and lng coords
 
         (async () => {
-            // TODO: get userId from token
-            // hard coded for Demo purposes only
-            const userId = '1';
-            const alt = 350;
-
-            try {
-                await axios.post('/api/satellites/jobs', {
-                    userId,
-                    gcs: [{ lat, lng, alt }],
-                });
-            } catch (err) {
-                console.error(err);
-            }
+            await postJob(lat, lng);
         })();
         setGcsCard(false);
     };
@@ -172,7 +173,7 @@ export const Dashboard = () => {
                     return <EntityPoint key={sat.satid} {...satellite} />;
                 })}
             </Viewer>
-            {!satellites && (
+            {satellites.length === 0 && (
                 <div className='flex-container-center'>
                     <Card className='card card-error'>
                         No Satellites detected with given location and above

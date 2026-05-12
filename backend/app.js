@@ -5,8 +5,9 @@ import auth from '#routes/auth';
 import authMiddleware from './api/middleware/jwt.js';
 import http from 'http';
 import { WebSocketServer } from 'ws';
-import { addClient, removeClient } from './api/config/wsManager.js';
+import { addClient, getClient, removeClient } from './api/config/wsManager.js';
 import { startRedisListener } from './api/config/wsHandler.js';
+import { connectRedis } from './api/config/redisClient.js';
 
 const app = express();
 const port = 3000;
@@ -17,6 +18,7 @@ const wss = new WebSocketServer({ server });
 
 (async () => {
     try {
+        await connectRedis();
         await startRedisListener();
         console.log('Redis listener started');
     } catch (err) {
@@ -28,12 +30,14 @@ const wss = new WebSocketServer({ server });
 wss.on('connection', (socket, request) => {
     console.log('Client connected!');
     const params = new URLSearchParams(request.url.split('?')[1]);
-    const userId = params.get('userId');
+    const userId = params.get('user_id');
 
     addClient(userId, socket);
 
     socket.on('close', () => {
-        removeClient(userId);
+        if (getClient(userId) === socket) {
+            removeClient(userId);
+        }
     });
 });
 

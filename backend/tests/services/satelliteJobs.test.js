@@ -15,15 +15,15 @@ describe('pushJob', () => {
     });
 
     it('should enqueue a job into Redis with correct payload', async () => {
-        const userId = 'user123';
+        const user_id = 'user123';
         const gcs = { lat: 34.05, lng: -118.25 };
 
-        await pushJob(userId, gcs);
+        await pushJob(user_id, gcs);
 
         expect(redisClient.lPush).toHaveBeenCalledTimes(1);
         expect(redisClient.lPush).toHaveBeenCalledWith(
             'satellite_jobs',
-            JSON.stringify({ userId, gcs })
+            JSON.stringify({ user_id, gcs })
         );
     });
 });
