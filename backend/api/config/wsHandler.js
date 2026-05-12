@@ -5,9 +5,9 @@ import { WebSocket } from 'ws';
 export const startRedisListener = async () => {
     try {
         await subscriber.subscribe('user-updates', (message) => {
-            const { userId, type, data } = JSON.parse(message);
+            const { user_id, type, data } = JSON.parse(message);
             // Look up the right WebSocket client
-            const ws = getClient(userId);
+            const ws = getClient(user_id);
 
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({ type, data }));

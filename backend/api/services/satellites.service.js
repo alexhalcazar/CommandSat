@@ -1,11 +1,11 @@
 import { redisClient } from '../config/redisClient.js';
 
-export const pushJob = async (userId, gcs) => {
+export const pushJob = async (user_id, gcs) => {
     try {
         await redisClient.lPush(
             'satellite_jobs',
             JSON.stringify({
-                userId,
+                user_id,
                 gcs,
             })
         );
