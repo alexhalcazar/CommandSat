@@ -1,5 +1,5 @@
 import { Entity, PointGraphics } from 'resium';
-import { Cartesian3 } from 'cesium';
+import { Cartesian3, Color } from 'cesium';
 
 /**
  * A resuable Resium component that renders a Cesium Entity with PointGraphics
@@ -15,12 +15,18 @@ import { Cartesian3 } from 'cesium';
  * @param {EntityPoint} entityPoint
  * @returns {JSX.Element} - A Resium Entity configured with PointGraphics
  */
-export const EntityPoint = ({ longitude, latitude, height, pixelSize }) => {
+export const EntityPoint = ({
+    longitude,
+    latitude,
+    height,
+    pixelSize,
+    color = 'WHITE',
+}) => {
     const position = Cartesian3.fromDegrees(longitude, latitude, height);
 
     return (
         <Entity position={position}>
-            <PointGraphics pixelSize={pixelSize} />
+            <PointGraphics pixelSize={pixelSize} color={Color[color]} />
         </Entity>
     );
 };

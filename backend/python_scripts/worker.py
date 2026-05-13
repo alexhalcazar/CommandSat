@@ -34,8 +34,6 @@ def fetch_satellites_above(lat, lng, alt):
         raise
 
 
-# when the job finishes push the data to the appropriate user
-# TODO: Update using the users GCS location(s)
 def process_jobs(r):
     while True:
         # blocking pop - waits until a job appears in the list
