@@ -17,7 +17,11 @@ export const Dashboard = () => {
     const [gcsCard, setGcsCard] = useState(false);
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
+    const [newLat, setNewLat] = useState(null);
+    const [newLng, setNewLng] = useState(null);
     const [geoAttempted, setGeoAttempted] = useState(false);
+    const [gcsDash, setGcsDash] = useState(false);
+    const [gcsLocations, setGCSLocations] = useState([]);
     const wsRef = useRef(null);
     const token = sessionStorage.getItem('token');
     const user = token ? jwtDecode(token) : null;
@@ -33,6 +37,19 @@ export const Dashboard = () => {
                 {
                     user_id: user.user_id,
                     gcs: [{ lat: latitude, lng: longitude, alt }],
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            await axios.post(
+                '/api/gcs',
+                {
+                    lat: latitude,
+                    lng: longitude,
+                    alt,
                 },
                 {
                     headers: {
@@ -119,28 +136,52 @@ export const Dashboard = () => {
         };
     }, [userId]);
 
-    const handleInitialGCS = (e) => {
+    const addGCS = (e, lattitude, longitude) => {
         e.preventDefault();
 
         (async () => {
-            await postJob(lat, lng);
+            await postJob(lattitude, longitude);
         })();
         setGcsCard(false);
+    };
+
+    const promptGCS = async () => {
+        try {
+            const response = await axios.get('/api/gcs', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const userGCS = response.data;
+            console.log('the data', userGCS);
+            setGCSLocations(userGCS);
+            setGcsDash(true);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleDelete = async (gcsID) => {
+        await axios.delete(`/api/gcs/${gcsID}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     };
 
     return (
         <>
             <div className='flex-container'>
-                <Button className='get-satellites-btn'>
+                <Button onClick={promptGCS} className='get-satellites-btn'>
                     <SatelliteIcon className='satellite-icon' />
                 </Button>
             </div>
-
+            {/* TODO: Create a re-usable component */}
             {gcsCard && (
                 <div className='flex-container-center'>
                     <Card className='card'>
                         Input initial Ground Control Station
-                        <form onSubmit={handleInitialGCS}>
+                        <form onSubmit={(e) => addGCS(e, lat, lng)}>
                             <label htmlFor='lat'>Lattitude</label>
                             <input
                                 type='text'
@@ -162,6 +203,60 @@ export const Dashboard = () => {
                     </Card>
                 </div>
             )}
+
+            {gcsDash && (
+                <div className='flex-container-center'>
+                    <Card className='card'>
+                        <button type='button' onClick={() => setGcsDash(false)}>
+                            Close
+                        </button>
+                        <h1>Ground Control Station Overview</h1>
+                        <div>
+                            <h2>List of GCS Locations</h2>
+                            <ul>
+                                {gcsLocations.map((gcs) => (
+                                    <li key={gcs.gcs_id}>
+                                        <span>GCS ID: {gcs.gcs_id}</span>
+                                        <span>Latitude: {gcs.latitude}</span>
+                                        <span>Longitude: {gcs.longitude}</span>
+                                        <span>Altitude: {gcs.altitude}</span>
+                                        <button
+                                            type='button'
+                                            onClick={() =>
+                                                handleDelete(gcs.gcs_id)
+                                            }
+                                        >
+                                            Delete
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Add a new GCS Location</h3>
+                            <form onSubmit={(e) => addGCS(e, newLat, newLng)}>
+                                <label htmlFor='lat'>Lattitude</label>
+                                <input
+                                    type='text'
+                                    style={{ display: 'block' }}
+                                    name='lat'
+                                    value={newLat ?? ''}
+                                    onChange={(e) => setNewLat(e.target.value)}
+                                ></input>
+                                <label htmlFor='lng'>Longitude</label>
+                                <input
+                                    type='text'
+                                    style={{ display: 'block' }}
+                                    name='lng'
+                                    value={newLng ?? ''}
+                                    onChange={(e) => setNewLng(e.target.value)}
+                                ></input>
+                                <button type='submit'>Submit</button>
+                            </form>
+                        </div>
+                    </Card>
+                </div>
+            )}
             <Viewer full>
                 {satellites?.map((sat) => {
                     const satellite = {
@@ -171,6 +266,22 @@ export const Dashboard = () => {
                         pixelSize: 10,
                     };
                     return <EntityPoint key={sat.satid} {...satellite} />;
+                })}
+                {gcsLocations?.map((gcs) => {
+                    console.log(gcs);
+                    const groundControlStation = {
+                        longitude: gcs.longitude,
+                        latitude: gcs.latitude,
+                        height: gcs.altitude,
+                        pixelSize: 20,
+                        color: 'RED',
+                    };
+                    return (
+                        <EntityPoint
+                            key={gcs.gcs_id}
+                            {...groundControlStation}
+                        />
+                    );
                 })}
             </Viewer>
             {satellites.length === 0 && (
