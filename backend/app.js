@@ -1,6 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import satelliteRouter from '#routes/satellites.routes';
+import gcsRouter from '#routes/gcs.routes';
 import auth from '#routes/auth';
 import authMiddleware from './api/middleware/jwt.js';
 import http from 'http';
@@ -43,6 +44,7 @@ wss.on('connection', (socket, request) => {
 
 app.use(express.json());
 app.use('/api/satellites', authMiddleware, satelliteRouter);
+app.use('/api/gcs', authMiddleware, gcsRouter);
 app.use('/api/auth', auth);
 
 server.listen(port, () => {
