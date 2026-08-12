@@ -27,7 +27,7 @@ export const delGCS = async (req, res) => {
     const { id } = req.params;
     try {
         await deleteUserGCS(id);
-        return res.status(204);
+        return res.sendStatus(204);
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: err.message });
