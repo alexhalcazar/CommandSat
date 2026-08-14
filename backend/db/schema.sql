@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS users (
     username    VARCHAR(100) UNIQUE NOT NULL,
     password    VARCHAR(255) NOT NULL,
     is_active   BOOLEAN DEFAULT TRUE,
-    has_logged_in BOOLEAN DEFAULT FALSE,
     created_at  TIMESTAMP DEFAULT NOW()
 );
 

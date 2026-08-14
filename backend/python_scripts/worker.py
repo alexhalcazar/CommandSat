@@ -26,8 +26,8 @@ def fetch_satellites_above(lat, lng, alt):
     except requests.exceptions.HTTPError as e:
         print(f'Server response error: {e.response.status_code}')
         raise
-    except requests.exceptions.ConnectionError:
-        print('No response from server')
+    except requests.exceptions.ConnectionError as e:
+        print(f'Could not connect to the server {e}')
         raise
     except requests.exceptions.RequestException as e:
         print(f'Request setup error: {e}')
@@ -35,29 +35,54 @@ def fetch_satellites_above(lat, lng, alt):
 
 
 def process_jobs(r):
+    r.delete('satellite_jobs')  # clear any stale jobs on startup
+    print('Queue cleared!')
     while True:
         # blocking pop - waits until a job appears in the list
         job = r.blpop('satellite_jobs', timeout=0)
-        
-        if job:
-            print('We got a new job!')
-            _, data = job
-            payload = json.loads(data)
-            user_id = payload['user_id']
-            satellites = []
-            for gcs in payload['gcs']:
-                lat = gcs['lat']
-                lng = gcs['lng']
-                alt = gcs['alt']
-                gcs_satellites =  fetch_satellites_above(lat, lng, alt)
-                satellites.extend(gcs_satellites['above'])
 
-            print('publishing data')
-            r.publish('user-updates', json.dumps({
-                'user_id': str(user_id),
-                'type': 'satellite_data',
-                'data': satellites
-            }))
+        if not job:
+            continue
+
+        print('We got a new job!')
+        _, data = job
+
+        try:
+            payload = json.loads(data)
+        except (json.JSONDecodeError(), ValueError) as e:
+            print(f'Bad payload, skipping job: {e}')
+            continue
+            
+        user_id = payload['user_id']
+        satellites_by_id = {}
+
+        for gcs in payload['gcs']:
+            lat = gcs['lat']
+            lng = gcs['lng']
+            alt = gcs['alt']
+            gcs_satellites =  fetch_satellites_above(lat, lng, alt)
+
+            
+            for sat in gcs_satellites.get('above', []):
+                satid = sat['satid']
+                satellites_by_id[satid] = {
+                    'satid': satid,
+                    'satname': sat['satname'],
+                    'launchdate': sat['launchDate'],
+                    'satlat': sat['satlat'],
+                    'satlng': sat['satlng'],
+                    'satalt': sat['satalt'],
+                }
+
+
+        print('publishing data')
+        print('All our satellites', satellites_by_id)
+        r.publish('user-updates', json.dumps({
+            'user_id': str(user_id),
+            'type': 'satellite_data',
+            'data': satellites_by_id
+        }))
+           
             
 
 if __name__ == '__main__':

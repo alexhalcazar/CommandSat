@@ -16,5 +16,5 @@ export const newUserGCS = async (userId, gcs) => {
 
 export const deleteUserGCS = async (gcs_id) => {
     await deleteGCS(gcs_id);
-    console.log('User succesfully deleted!');
+    console.log('GCS succesfully deleted!');
 };

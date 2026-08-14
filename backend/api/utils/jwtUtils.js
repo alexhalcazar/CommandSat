@@ -5,6 +5,7 @@ export const generateAccessToken = (user) => {
         user_id: user.user_id,
         username: user.username,
         email: user.email,
+        isFirstLogin: user.isFirstLogin,
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET, {

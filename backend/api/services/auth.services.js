@@ -18,6 +18,7 @@ export const registerUser = async (username, email, password) => {
             user_id: result.rows[0].user_id,
             username: result.rows[0].username,
             email: result.rows[0].email,
+            isFirstLogin: true,
         };
         return generateAccessToken(user);
     } catch (err) {
@@ -28,7 +29,8 @@ export const registerUser = async (username, email, password) => {
 
 export const loginUser = async (email, password) => {
     try {
-        const user = await findUserByEmail(email);
+        const existingUser = await findUserByEmail(email);
+        const user = { ...existingUser, isFirstLogin: false };
 
         if (!user) {
             const error = new Error('No user with email found');

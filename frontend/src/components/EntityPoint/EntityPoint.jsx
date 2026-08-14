@@ -21,11 +21,12 @@ export const EntityPoint = ({
     height,
     pixelSize,
     color = 'WHITE',
+    data = null,
 }) => {
     const position = Cartesian3.fromDegrees(longitude, latitude, height);
 
     return (
-        <Entity position={position}>
+        <Entity position={position} properties={data}>
             <PointGraphics pixelSize={pixelSize} color={Color[color]} />
         </Entity>
     );
