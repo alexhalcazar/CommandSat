@@ -43,8 +43,8 @@ export const Dashboard = () => {
     );
 
     const gcsJob = useCallback(
-        async (latitude, longitude) => {
-            await axios.post(
+        (latitude, longitude) =>
+            axios.post(
                 '/api/gcs',
                 {
                     lat: latitude,
@@ -56,8 +56,7 @@ export const Dashboard = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 }
-            );
-        },
+            ),
         [token]
     );
 
@@ -69,6 +68,7 @@ export const Dashboard = () => {
                 },
             });
             const userGCS = response.data;
+
             setGCSLocations(userGCS);
         } catch (err) {
             console.error(err);
@@ -172,10 +172,11 @@ export const Dashboard = () => {
 
         (async () => {
             try {
-                await gcsJob(
+                const gcsID = await gcsJob(
                     formData.get('lattitude'),
                     formData.get('longitude')
                 );
+                console.log('Newly inserted GCS ID', gcsID.data.gcs_id);
                 await satelliteJob(
                     formData.get('lattitude'),
                     formData.get('longitude')
