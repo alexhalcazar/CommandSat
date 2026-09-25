@@ -12,7 +12,7 @@ export const CardGCS = ({ onClick, onSubmit, onDelete, gcsLocations }) => {
                 <div>
                     <h2>List of GCS Locations</h2>
                     <ul>
-                        {gcsLocations.map((gcs) => (
+                        {gcsLocations?.map((gcs) => (
                             <li key={gcs.gcs_id}>
                                 <span>GCS ID: {gcs.gcs_id}</span>
                                 <span>Latitude: {gcs.latitude}</span>
