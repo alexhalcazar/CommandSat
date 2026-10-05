@@ -1,4 +1,4 @@
-import { pushJob } from '#services/satellites.service';
+import { satelliteService } from '../../api/composition';
 import { redisClient } from '../../api/config/redisClient';
 import { describe, beforeEach, expect, vi, it } from 'vitest';
 
@@ -18,7 +18,7 @@ describe('pushJob', () => {
         const user_id = 'user123';
         const gcs = { lat: 34.05, lng: -118.25 };
 
-        await pushJob(user_id, gcs);
+        await satelliteService.pushJob(user_id, gcs);
 
         expect(redisClient.lPush).toHaveBeenCalledTimes(1);
         expect(redisClient.lPush).toHaveBeenCalledWith(
