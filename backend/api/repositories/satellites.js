@@ -3,7 +3,7 @@ export const satelliteRepository = (pool) => ({
         const buildInsertValues = (items, fields, columnCount) => {
             const values = items
                 .map((_, i) => {
-                    console.log('This satellite', _);
+                    // console.log('This satellite', _);
                     const offset = i * columnCount;
                     const placeholders = Array.from(
                         { length: columnCount },
@@ -18,7 +18,7 @@ export const satelliteRepository = (pool) => ({
 
         const catalog = buildInsertValues(
             satellites,
-            (s) => [s.satid, s.satname, s.launch_date],
+            (s) => [s.satid, s.satname, s.launchDate],
             3
         );
         const position = buildInsertValues(

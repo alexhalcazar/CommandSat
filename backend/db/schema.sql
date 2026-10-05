@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS ground_control_stations (
 CREATE TABLE if NOT EXISTS satellite_catalog (
     satid           INTEGER PRIMARY KEY,
     satname         VARCHAR(255),
-    launch_date     DATE
+    launchDate      DATE
 );
 
 CREATE TABLE IF NOT EXISTS satellite_postions (

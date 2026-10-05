@@ -78,7 +78,7 @@ def process_jobs(r):
                 satellites_by_id[satid] = {
                     'satid': satid,
                     'satname': sat['satname'],
-                    'launchdate': sat['launchDate'],
+                    'launchDate': sat['launchDate'],
                     'satlat': sat['satlat'],
                     'satlng': sat['satlng'],
                     'satalt': sat['satalt'],
