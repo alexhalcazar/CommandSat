@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
+from datetime import date
 import os
 import redis
 import json
@@ -65,13 +66,28 @@ def process_jobs(r):
             
             for sat in gcs_satellites.get('above', []):
                 satid = sat['satid']
+                # TODO: Create a function to get simulated values
+                # TODO: Need to determine the best way to get velocity
+                # simulated_values currently a placeholder
+                simulated_values = {
+                    'signal_strength': 50.00,
+                    'battery_level': 100.00,
+                    'mode': 'Normal'
+                }
+                # TODO: Need to add GCS_ID for each satellite
                 satellites_by_id[satid] = {
                     'satid': satid,
                     'satname': sat['satname'],
-                    'launchdate': sat['launchDate'],
+                    'launchDate': sat['launchDate'],
                     'satlat': sat['satlat'],
                     'satlng': sat['satlng'],
                     'satalt': sat['satalt'],
+                    'velocity': 100.00,
+                    'recorded_at': date.today().isoformat(),
+                    'signal_strength': simulated_values['signal_strength'],
+                    'battery_level': simulated_values['battery_level'],
+                    'mode': simulated_values['mode'],
+                    'updated_at': date.today().isoformat(),
                 }
 
 

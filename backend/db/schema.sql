@@ -9,27 +9,36 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS ground_control_stations (
     gcs_id      SERIAL PRIMARY KEY,
-    user_id     INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    user_id     INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     latitude    FLOAT NOT NULL,
     longitude   FLOAT NOT NULL,
     altitude    FLOAT NOT NULL,
     created_at  TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS satellites (
-    satellite_id        SERIAL PRIMARY KEY,
-    gcs_id              INT NOT NULL REFERENCES ground_control_stations(gcs_id) ON DELETE CASCADE,
-    satid               INTEGER NOT NULL,
-    satname             VARCHAR(255),
-    launch_date         DATE,
-    satlat              FLOAT,
-    satlng              FLOAT,
-    satalt              FLOAT,
+CREATE TABLE if NOT EXISTS satellite_catalog (
+    satid           INTEGER PRIMARY KEY,
+    satname         VARCHAR(255),
+    launchDate      DATE
+);
+
+CREATE TABLE IF NOT EXISTS satellite_postions (
+    position_id         SERIAL PRIMARY KEY,
+    satid               INTEGER NOT NULL REFERENCES satellite_catalog(satid) ON DELETE CASCADE,
+    satlat              FLOAT NOT NULL,
+    satlng              FLOAT NOT NULL,
+    satalt              FLOAT NOT NULL,
     velocity            FLOAT,
-    last_contact_time   TIMESTAMP,
+    recorded_at         TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE if NOT EXISTS gcs_satellites (
+    satid               INTEGER NOT NULL REFERENCES satellite_catalog(satid) ON DELETE CASCADE,
+    gcs_id              INTEGER NOT NULL REFERENCES ground_control_stations(gcs_id) ON DELETE CASCADE,
+    PRIMARY KEY         (gcs_id, satid),
     signal_strength     FLOAT,
     battery_level       FLOAT,
     mode                VARCHAR(20) CONSTRAINT valid_mode CHECK (mode IN ('Normal', 'Safe')),
-    updated_at          TIMESTAMP DEFAULT NOW(),
-    UNIQUE (gcs_id, satid)
+    updated_at          TIMESTAMP DEFAULT NOW()
 );
+

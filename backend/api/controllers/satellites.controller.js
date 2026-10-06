@@ -1,9 +1,9 @@
-import { pushJob } from '#services/satellites.service';
+import { satelliteService } from '../composition.js';
 
 export const pushSatelliteJob = async (req, res) => {
     const { user_id, gcs } = req.body;
     try {
-        await pushJob(user_id, gcs);
+        await satelliteService.pushJob(user_id, gcs);
         res.json({ message: 'queued' });
     } catch (err) {
         console.log(err);

@@ -12,7 +12,8 @@
         "#controllers/*": "./api/controllers/*.js",
         "#routes/*": "./api/routes/*.js",
         "#services/*": "./api/services/*.js",
-        "#utils/*": "./api/utils/*.js"
+        "#utils/*": "./api/utils/*.js",
+        "#repositories/*": "./api/repositories/*.js"
     },
     "author": "Alex Alcazar",
     "license": "ISC",
